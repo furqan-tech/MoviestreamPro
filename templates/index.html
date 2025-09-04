@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Stream App</title>
+</head>
+<body>
+    <h1>Upload Movie</h1>
+    <form action="/upload" enctype="multipart/form-data" method="post">
+        <input name="file" type="file" accept="video/*" required>
+        <button type="submit">Upload</button>
+    </form>
+    <h2>Available Movies</h2>
+    <ul>
+    {% for video in videos %}
+      <li><a href="/video/{{video}}">{{video}}</a></li>
+    {% else %}
+      <li>No videos uploaded yet.</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

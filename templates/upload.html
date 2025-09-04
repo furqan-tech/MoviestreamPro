@@ -1,0 +1,61 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-3 bg-dark text-light">
+                <div class="card-header bg-secondary">
+                    <h3 class="mb-0 fw-bold text-light">Upload Movie</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/admin/upload" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="genre" class="form-label">Genre</label>
+                            <input type="text" class="form-control" id="genre" name="genre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="year" class="form-label">Year</label>
+                            <input type="number" class="form-control" id="year" name="year" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="duration" class="form-label">Duration (min)</label>
+                            <input type="number" class="form-control" id="duration" name="duration" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Rating</label>
+                            <input type="text" class="form-control" id="rating" name="rating">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="director" class="form-label">Director</label>
+                            <input type="text" class="form-control" id="director" name="director">
+                        </div>
+                        <div class="mb-3">
+                            <label for="movie_cast" class="form-label">Cast</label>
+                            <input type="text" class="form-control" id="movie_cast" name="movie_cast">
+                        </div>
+                        <div class="mb-3">
+                            <label for="thumbnail" class="form-label">Thumbnail</label>
+                            <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/jpeg,image/png">
+                        </div>
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Video File</label>
+                            <input type="file" class="form-control" id="file" name="file" accept="video/mp4,video/mpeg" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex gap-2">
+                <select id="genreFilter" class="form-select">
+                    <option value="">All Genres</option>
+                    {% for g in genres %}
+                    <option value="{{ g }}">{{ g }}</option>
+                    {% endfor %}
+                </select>
+                <select id="yearFilter" class="form-select">
+                    <option value="">All Years</option>
+                    {% for y in years %}
+                    <option value="{{ y }}">{{ y }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4">
+        {% for movie in movies %}
+        <div class="col-md-4 col-sm-6 movie-item" data-genre="{{ movie.genre }}" data-year="{{ movie.year }}">
+            <div class="card movie-card h-100">
+                <img src="{{ movie.thumbnail or '/static/placeholder-movie.jpg' }}" class="card-img-top" alt="{{ movie.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ movie.title }}</h5>
+                    <p class="card-text">{{ movie.genre }} • {{ movie.year }}</p>
+                    <a href="/movie/{{ movie.id }}" class="btn btn-primary rounded-pill">Watch Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

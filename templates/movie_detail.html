@@ -1,0 +1,210 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-3 mb-4 overflow-hidden bg-dark">
+                <div class="card-body p-0">
+                    <div class="video-player-container">
+                        <video
+                            id="videoPlayer"
+                            class="w-100 rounded-3"
+                            controls
+                            preload="metadata"
+                            poster="{{ movie.thumbnail or '/static/placeholder-movie.jpg' }}"
+                            style="max-height: 500px; background: #000;"
+                        >
+                            <source src="/stream/{{ movie.id }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow-lg border-0 rounded-3 mb-4 bg-dark text-light">
+                <div class="card-body">
+                    <h2 class="fw-bold">{{ movie.title }}</h2>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span class="badge bg-primary rounded-pill">{{ movie.genre }}</span>
+                        <span class="badge bg-secondary rounded-pill">{{ movie.year }}</span>
+                        <span class="badge bg-info rounded-pill">{{ movie.duration }} min</span>
+                        {% if movie.rating %}
+                        <span class="badge bg-warning rounded-pill">{{ movie.rating }}</span>
+                        {% endif %}
+                    </div>
+                    <p>{{ movie.description }}</p>
+                    
+                    <div class="d-flex gap-2 mt-4">
+                        <button class="btn btn-primary rounded-pill px-4 {% if in_watchlist %}active{% endif %}" onclick="toggleWatchlist('{{ movie.id }}')" id="watchlistBtn">
+                            <i class="bi {% if in_watchlist %}bi-bookmark-check-fill{% else %}bi-bookmark-fill{% endif %}"></i> {% if in_watchlist %}Remove from Watchlist{% else %}Add to Watchlist{% endif %}
+                        </button>
+                        <button class="btn btn-outline-light rounded-pill px-4" onclick="shareMovie('{{ movie.id }}')">
+                            <i class="bi bi-share-fill"></i> Share
+                        </button>
+                        <button class="btn btn-outline-info rounded-pill px-4" onclick="downloadMovie('{{ movie.id }}')">
+                            <i class="bi bi-download"></i> Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow-lg border-0 rounded-3 mb-4 bg-dark text-light">
+                <div class="card-header bg-secondary">
+                    <h5 class="mb-0 fw-bold text-light">Movie Details</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-dark text-light d-flex justify-content-between">
+                        <span>Director</span>
+                        <span class="text-end">{{ movie.director or 'Unknown' }}</span>
+                    </li>
+                    <li class="list-group-item bg-dark text-light d-flex justify-content-between">
+                        <span>Cast</span>
+                        <span class="text-end">{{ movie.movie_cast or 'Unknown' }}</span>
+                    </li>
+                    <li class="list-group-item bg-dark text-light d-flex justify-content-between">
+                        <span>Rating</span>
+                        <span>{{ movie.rating or 'N/A' }}</span>
+                    </li>
+                    <li class="list-group-item bg-dark text-light d-flex justify-content-between">
+                        <span>Uploaded</span>
+                        <span>{{ movie.upload_date }}</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="card shadow-lg border-0 rounded-3 bg-dark text-light">
+                <div class="card-header bg-secondary">
+                    <h5 class="mb-0 fw-bold text-light">Similar Movies</h5>
+                </div>
+                <div class="card-body">
+                    {% for similar in similar_movies %}
+                    <div class="d-flex mb-3 align-items-center">
+                        <img src="{{ similar.thumbnail or '/static/placeholder-movie.jpg' }}" class="rounded me-3" width="60" height="90" style="object-fit: cover;" loading="lazy">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1 fw-bold text-light">{{ similar.title }}</h6>
+                            <small class="text-light">{{ similar.genre }} • {{ similar.year }}</small>
+                            <br>
+                            <a href="/movie/{{ similar.id }}" class="btn btn-sm btn-outline-primary rounded-pill mt-1">Watch</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% if not similar_movies %}
+                    <p class="text-light text-center">No similar movies found.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function toggleWatchlist(movieId) {
+    const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    modal.show();
+    try {
+        const response = await fetch(`/watchlist/toggle/${movieId}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'}
+        });
+        const data = await response.json();
+        const btn = document.getElementById('watchlistBtn');
+        if (data.in_watchlist) {
+            btn.innerHTML = '<i class="bi bi-bookmark-check-fill"></i> Remove from Watchlist';
+            btn.classList.add('active');
+        } else {
+            btn.innerHTML = '<i class="bi bi-bookmark-fill"></i> Add to Watchlist';
+            btn.classList.remove('active');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to update watchlist. Please try again.');
+    } finally {
+        modal.hide();
+    }
+}
+
+function shareMovie(movieId) {
+    const url = window.location.origin + '/movie/' + movieId;
+    if (navigator.share) {
+        navigator.share({
+            title: 'Check out this movie on MovieStream Pro',
+            text: 'Watch ' + document.querySelector('h2').textContent + ' now!',
+            url: url
+        }).catch(error => {
+            console.error('Share failed:', error);
+        });
+    } else {
+        navigator.clipboard.writeText(url).then(() => {
+            alert('Link copied to clipboard!');
+        });
+    }
+}
+
+async function downloadMovie(movieId) {
+    const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    modal.show();
+    try {
+        const response = await fetch(`/download/${movieId}`);
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `${movieId}.mp4`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } else {
+            alert('Download failed. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Download failed. Please try again.');
+    } finally {
+        modal.hide();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const videoPlayer = document.getElementById('videoPlayer');
+    if (videoPlayer) {
+        const movieId = window.location.pathname.split('/').pop();
+        const savedTime = localStorage.getItem(`playback_${movieId}`);
+        if (savedTime) {
+            videoPlayer.currentTime = parseFloat(savedTime);
+        }
+
+        videoPlayer.addEventListener('timeupdate', async () => {
+            if (!videoPlayer.paused) {
+                localStorage.setItem(`playback_${movieId}`, videoPlayer.currentTime);
+                try {
+                    await fetch('/history/update', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            movie_id: movieId,
+                            playback_time: videoPlayer.currentTime,
+                            duration: videoPlayer.duration
+                        })
+                    });
+                } catch (error) {
+                    console.error('Error updating history:', error);
+                }
+            }
+        });
+
+        window.addEventListener('beforeunload', () => {
+            if (!videoPlayer.paused) {
+                localStorage.setItem(`playback_${movieId}`, videoPlayer.currentTime);
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,86 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Admin Panel</h2>
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg border-0 rounded-3 bg-dark text-light mb-4">
+                <div class="card-header bg-secondary">
+                    <h5 class="mb-0 fw-bold text-light">Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <p>Movies: {{ stats.movies }}</p>
+                    <p>Users: {{ stats.users }}</p>
+                    <p>Genres: {{ stats.genres }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg border-0 rounded-3 bg-dark text-light mb-4">
+                <div class="card-header bg-secondary">
+                    <h5 class="mb-0 fw-bold text-light">Movies</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Genre</th>
+                                <th>Year</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for movie in movies %}
+                            <tr>
+                                <td>{{ movie.title }}</td>
+                                <td>{{ movie.genre }}</td>
+                                <td>{{ movie.year }}</td>
+                                <td><button class="btn btn-danger btn-sm" onclick="deleteMovie('{{ movie.id }}')">Delete</button></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg border-0 rounded-3 bg-dark text-light">
+                <div class="card-header bg-secondary">
+                    <h5 class="mb-0 fw-bold text-light">Users</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.role }}</td>
+                                <td><button class="btn btn-danger btn-sm" onclick="deleteUser('{{ user.username }}')">Delete</button></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <a href="/admin/upload" class="btn btn-primary rounded-pill">Upload Movie</a>
+        <a href="/admin/import" class="btn btn-secondary rounded-pill ms-2">Import Movie</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Watch History</h2>
+    <div class="row g-4">
+        {% for movie, details in history_movies %}
+        <div class="col-md-4 col-sm-6">
+            <div class="card movie-card h-100">
+                <img src="{{ movie.thumbnail or '/static/placeholder-movie.jpg' }}" class="card-img-top" alt="{{ movie.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ movie.title }}</h5>
+                    <p class="card-text">{{ movie.genre }} • {{ movie.year }}</p>
+                    <p class="card-text text-muted">Watched: {{ details.watch_timestamp }}</p>
+                    <a href="/movie/{{ movie.id }}" class="btn btn-primary rounded-pill">Watch Again</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% if not history_movies %}
+        <p class="text-light text-center">No watch history available.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

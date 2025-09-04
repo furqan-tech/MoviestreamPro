@@ -1,0 +1,290 @@
+
+:root {
+    --primary-color: #1a2a44;
+    --secondary-color: #6c757d;
+    --background-dark: #141414;
+    --card-bg-dark: #1f1f1f;
+    --text-light: #ffffff;
+    --text-muted: #cccccc;
+    --background-light: #f8f9fa;
+    --card-bg-light: #ffffff;
+    --text-dark: #212529;
+}
+
+body {
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding-top: 70px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.light-theme {
+    background-color: var(--background-light);
+    color: var(--text-dark);
+}
+
+.navbar {
+    background-color: var(--card-bg-dark);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    padding: 0.5rem 1rem;
+}
+
+body.light-theme .navbar {
+    background-color: var(--card-bg-light);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+    transform: scale(1.1);
+}
+
+.nav-link {
+    color: var(--text-light) !important;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+body.light-theme .nav-link {
+    color: var(--text-dark) !important;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+.hero-section {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/static/banner.png') center/cover no-repeat, #141414;
+    padding: 5rem 0;
+    position: relative;
+}
+
+body.light-theme .hero-section {
+    background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url('/static/banner.png') center/cover no-repeat, #f8f9fa;
+}
+
+.main-content {
+    min-height: calc(100vh - 70px - 200px);
+}
+
+.movie-card {
+    background-color: var(--card-bg-dark);
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+body.light-theme .movie-card {
+    background-color: var(--card-bg-light);
+    border: 1px solid #ddd;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+.card-img-top {
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.movie-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.light-theme .movie-overlay {
+    background: rgba(0,0,0,0.5);
+}
+
+.movie-card:hover .movie-overlay {
+    opacity: 1;
+}
+
+.movie-overlay-content {
+    text-align: center;
+    padding: 1rem;
+}
+
+.movie-overlay-content h5 {
+    margin-bottom: 0.5rem;
+}
+
+.movie-overlay-content p {
+    margin-bottom: 1rem;
+}
+
+.video-player-container {
+    position: relative;
+    width: 100%;
+}
+
+.table {
+    background-color: var(--card-bg-dark);
+}
+
+body.light-theme .table {
+    background-color: var(--card-bg-light);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(26, 42, 68, 0.1);
+}
+
+body.light-theme .table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: #142b4d;
+    border-color: #142b4d;
+    transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+body.light-theme .btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+body.light-theme .btn-outline-primary:hover {
+    color: var(--text-light);
+}
+
+.btn-outline-light {
+    border-color: var(--text-light);
+    color: var(--text-light);
+}
+
+body.light-theme .btn-outline-light {
+    border-color: var(--text-dark);
+    color: var(--text-dark);
+}
+
+.btn-outline-light:hover {
+    background-color: var(--text-light);
+    color: var(--background-dark);
+}
+
+body.light-theme .btn-outline-light:hover {
+    background-color: var(--text-dark);
+    color: var(--background-light);
+}
+
+.form-control, .form-select {
+    background-color: var(--card-bg-dark);
+    color: var(--text-light);
+    border-color: var(--secondary-color);
+}
+
+body.light-theme .form-control, body.light-theme .form-select {
+    background-color: var(--card-bg-light);
+    color: var(--text-dark);
+    border-color: #ced4da;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--card-bg-dark);
+    color: var(--text-light);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(26, 42, 68, 0.25);
+}
+
+body.light-theme .form-control:focus, body.light-theme .form-select:focus {
+    background-color: var(--card-bg-light);
+    color: var(--text-dark);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(26, 42, 68, 0.25);
+}
+
+.rounded-start-pill {
+    border-top-left-radius: 50rem !important;
+    border-bottom-left-radius: 50rem !important;
+}
+
+.rounded-end-pill {
+    border-top-right-radius: 50rem !important;
+    border-bottom-right-radius: 50rem !important;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+footer {
+    background-color: var(--card-bg-dark);
+    border-top: 1px solid #333;
+}
+
+body.light-theme footer {
+    background-color: var(--card-bg-light);
+    border-top: 1px solid #ddd;
+}
+
+footer a {
+    color: #0dcaf0;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.text-info {
+    color: #0dcaf0 !important;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 3rem 0;
+    }
+    .movie-card {
+        margin-bottom: 1rem;
+    }
+}
